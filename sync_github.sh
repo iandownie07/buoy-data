@@ -1,4 +1,18 @@
+#!/bin/bash
+
+set -e
+
+cd /home/ian/buoy_ekf/github
+
 echo "===== $(date -u '+%Y-%m-%d %H:%M:%S UTC') ====="
+
+# --------------------------------------------------------------------
+# Check repository integrity
+# --------------------------------------------------------------------
+if ! git fsck --no-progress >/dev/null 2>&1; then
+    echo "Repository appears corrupted. Aborting."
+    exit 1
+fi
 
 # --------------------------------------------------------------------
 # Check network
