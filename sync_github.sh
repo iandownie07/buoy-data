@@ -7,6 +7,14 @@ cd /home/ian/buoy_ekf/github
 echo "===== $(date -u '+%Y-%m-%d %H:%M:%S UTC') ====="
 
 # --------------------------------------------------------------------
+# Recover from an interrupted previous run
+# --------------------------------------------------------------------
+if ! git diff --cached --quiet; then
+    echo "Found leftover staged changes. Cleaning index..."
+    git reset HEAD .
+fi
+
+# --------------------------------------------------------------------
 # Check repository integrity
 # --------------------------------------------------------------------
 if ! git fsck --no-progress >/dev/null 2>&1; then
@@ -77,7 +85,7 @@ if git push origin main; then
     echo "Push successful."
 else
     echo "Push failed. Undoing commit..."
-    git reset --soft HEAD~1
+    git reset --mixed HEAD~1
     exit 1
 fi
 
